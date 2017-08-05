@@ -28,9 +28,10 @@ Docker runs on a VirtualBox VM which by default only shares the user directory f
 `git clone https://github.com/nodemcu/nodemcu-firmware.git`
 
 ### Run this image with Docker
+
 Start Docker and change to the NodeMCU firmware directory (in the Docker console). Then run:
 
-``docker run --rm -ti -v `pwd`:/opt/nodemcu-firmware marcelstoer/nodemcu-build``
+``docker run --rm -ti -v `pwd`:/opt/nodemcu-firmware suculent/nodemcu-docker-build``
 
 Depending on the performance of your system it takes 1-3min until the compilation finishes. The first time you run this it takes longer because Docker needs to download the image and create a container.
 
