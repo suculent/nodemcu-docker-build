@@ -2,6 +2,27 @@
 
 set -e
 
+parse_yaml() {
+    local prefix=$2
+    local s
+    local w
+    local fs
+    s='[[:space:]]*'
+    w='[a-zA-Z0-9_]*'
+    fs="$(echo @|tr @ '\034')"
+    sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s[:-]$s\(.*\)$s\$|\1$fs\2$fs\3|p" "$1" |
+    awk -F"$fs" '{
+    indent = length($1)/2;
+    vname[indent] = $2;
+    for (i in vname) {if (i > indent) {delete vname[i]}}
+        if (length($3) > 0) {
+            vn=""; for (i=0; i<indent; i++) {vn=(vn)(vname[i])("_")}
+            printf("%s%s%s=(\"%s\")\n", "'"$prefix"'",vn, $2, $3);
+        }
+    }' | sed 's/_=/+=/g'
+}
+
 # Config options you may pass via Docker like so 'docker run -e "<option>=<value>"':
 # - IMAGE_NAME=<name>, define a static name for your .bin files
 # - INTEGER_ONLY=1, if you want the integer firmware
@@ -28,6 +49,45 @@ fi
 
 export PATH=$PATH:$PWD/esp-open-sdk/sdk:$PWD/esp-open-sdk/xtensa-lx106-elf/bin
 cd nodemcu-firmware
+
+# Parse thinx.yml config
+
+if [[ -f "thinx.yml" ]]; then
+  echo "Reading thinx.yml:"
+  parse_yaml thinx.yml
+  eval $(parse_yaml thinx.yml)
+
+  pushd app
+    C_MODULES=$(ls -l */)
+    echo "- c-modules: ${nodemcu_modules_c[@]}"
+    for module in ${nodemcu_modules_c[@]} do
+      if [[ "module" == ".output" ]]; then
+        break;
+      fi
+      if [[ $C_MODULES == "*${module}*"]]; then
+        echo "Enabling C module ${module}"
+      else
+        echo "Disabling C module ${module}"
+        rm -rf ${module}
+      fi
+    done
+  popd
+
+  pushd lua_modules
+    LUA_MODULES=$(ls -l */)
+    echo "- lua-modules: ${nodemcu_modules_lua[@]}"
+    for module in ${nodemcu_modules_lua[@]} do
+      if [[ $LUA_MODULES == "*${module}*"]]; then
+        echo "Enabling LUA module ${module}"
+      else
+        echo "Disabling LUA module ${module}"
+        rm -rf ${module}
+      fi
+    done
+  popd
+
+  done
+fi
 
 # make a float build if !only-integer
 if [ -z "$INTEGER_ONLY" ]; then
