@@ -17,6 +17,8 @@ I see 3 types of NodeMCU developers:
   
   They commit or contribute to the project on GitHub and need their own full fledged [build environment with the complete tool chain](http://www.esp8266.com/wiki/doku.php?id=toolchain#how_to_setup_a_vm_to_host_your_toolchain). _They still might find this Docker image useful._
 
++**This image has been created for purposes of the [THiNX OpenSource IoT management platform](https://thinx.cloud).**
+
 ## Usage
 
 ### Install Docker
