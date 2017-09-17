@@ -37,14 +37,14 @@ else
   true
 fi
 
-# unpack esp-open-sdk.tar.gz in a directory that is NOT the bound mount directory (i.e. inside the Docker image)
-cp tools/esp-open-sdk.tar.* ../
-cd ..
-# support older build chains (before we re-packaged it)
+if [ -f ../esp-open-sdk.tar.xz ]; then
+  tar -Jxvf esp-open-sdk.tar.xz
+  echo "Using OpenSDK.."
+fi
+
 if [ -f ./esp-open-sdk.tar.xz ]; then
   tar -Jxvf esp-open-sdk.tar.xz
-else
-  tar -zxvf esp-open-sdk.tar.gz
+  echo "Using OpenSDK."
 fi
 
 export PATH=$PATH:$PWD/esp-open-sdk/sdk:$PWD/esp-open-sdk/xtensa-lx106-elf/bin
