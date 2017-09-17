@@ -42,13 +42,9 @@ if [ -f ../esp-open-sdk.tar.xz ]; then
   echo "Using OpenSDK.."
 fi
 
-if [ -f ./esp-open-sdk.tar.xz ]; then
-  tar -Jxvf esp-open-sdk.tar.xz
-  echo "Using OpenSDK."
-fi
-
 export PATH=$PATH:$PWD/esp-open-sdk/sdk:$PWD/esp-open-sdk/xtensa-lx106-elf/bin
-cd nodemcu-firmware
+#cd nodemcu-firmware
+pwd
 
 # Parse thinx.yml config
 
