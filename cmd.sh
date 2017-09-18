@@ -37,14 +37,10 @@ else
   true
 fi
 
-if [ -f ../esp-open-sdk.tar.xz ]; then
-  tar -Jxvf esp-open-sdk.tar.xz
-  echo "Using OpenSDK.."
-fi
-
-export PATH=$PATH:$PWD/esp-open-sdk/sdk:$PWD/esp-open-sdk/xtensa-lx106-elf/bin
-#cd nodemcu-firmware
+export PATH=$PATH:/opt/esp-open-sdk/sdk:/opt/esp-open-sdk/xtensa-lx106-elf/bin
+cd /opt/nodemcu-firmware
 pwd
+ls
 
 # Parse thinx.yml config
 
@@ -56,33 +52,37 @@ if [[ -f "thinx.yml" ]]; then
   pushd app
     C_MODULES=$(ls -l */)
     echo "- c-modules: ${nodemcu_modules_c[@]}"
-    for module in ${nodemcu_modules_c[@]} do
+
+    for module in ${nodemcu_modules_c[@]}; do
       if [[ "module" == ".output" ]]; then
         break;
       fi
-      if [[ $C_MODULES == "*${module}*"]]; then
+      if [[ $C_MODULES == "*${module}*" ]]; then
         echo "Enabling C module ${module}"
       else
         echo "Disabling C module ${module}"
         rm -rf ${module}
       fi
     done
+
   popd
 
   pushd lua_modules
-    LUA_MODULES=$(ls -l */)
-    echo "- lua-modules: ${nodemcu_modules_lua[@]}"
-    for module in ${nodemcu_modules_lua[@]} do
-      if [[ $LUA_MODULES == "*${module}*"]]; then
-        echo "Enabling LUA module ${module}"
-      else
-        echo "Disabling LUA module ${module}"
-        rm -rf ${module}
-      fi
-    done
+
+  LUA_MODULES=$(ls -l */)
+  echo "- lua-modules: ${nodemcu_modules_lua[@]}"
+
+  for module in ${nodemcu_modules_lua[@]}; do
+    if [[ $LUA_MODULES == "*${module}*" ]]; then
+      echo "Enabling LUA module ${module}"
+    else
+      echo "Disabling LUA module ${module}"
+      rm -rf ${module}
+    fi
+  done
+
   popd
 
-  done
 fi
 
 # make a float build if !only-integer
