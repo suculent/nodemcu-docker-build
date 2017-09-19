@@ -51,7 +51,7 @@ ls
 
 if [[ -f "$WORKDIR/thinx.yml" ]]; then
   echo "Reading thinx.yml:"
-  parse_yaml $WORKDIR/thinx.yml
+  #parse_yaml $WORKDIR/thinx.yml
   eval $(parse_yaml $WORKDIR/thinx.yml)
 
   echo "Entering app.."

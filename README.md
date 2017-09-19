@@ -39,7 +39,7 @@ Depending on the performance of your system it takes 1-3min until the compilatio
 
 :bangbang: If you have previously pulled this Docker image (e.g. with the command above) you should update the image from time to time to pull in the latest bug fixes:
 
-`docker pull marcelstoer/nodemcu-build`
+`docker pull suculent/nodemcu-docker-build`
 
 **Note for Windows users**
 
@@ -61,6 +61,63 @@ You can pass the following optional parameters to the Docker build like so `dock
 - `INTEGER_ONLY` Set this to 1 if you don't need NodeMCU with floating support, cuts the build time in half.
 - `FLOAT_ONLY` Set this to 1 if you only need NodeMCU with floating support, cuts the build time in half.
 
+This variant also intends to support `thinx.yml` file that should allow for remote module configuration except for pre-populating filesystem with custom LUA files (and/or modules).
+
+Format of the file should be as follows (supports is now disabled, because barely deleting module is not sufficient; Makefile needs to be edited first).
+
+```
+nodemcu:
+  modules:
+    c:
+      - coap
+      - crypto
+      - dhtlib
+      - driver
+      - esp-gdbstub
+      - fatfs
+      - http
+      - include
+      - libc
+      - lua
+      - lwip
+      - mapfile
+      - mbedtls
+      - misc
+      - modules
+      - mqtt
+      - net
+      - pcm
+      - platform
+      - pm
+      - sjson
+      - smart
+      - spiffs
+      - swTimer
+      - task
+      - tsl2561
+      - u8glib
+      - ucglib
+      - user
+      - websocket
+      - wofs
+    lua:
+      - bh1750
+      - bmp085
+      - dht_lib
+      - ds18b20
+      - ds3231
+      - email
+      - hdc1000
+      - http
+      - lm92
+      - mcp23008
+      - redis
+      - si7021
+      - thinx
+      - tsl2561
+      - yeelink
+```
+
 ### Flashing the built binary
 There are several [tools to flash the firmware](http://nodemcu.readthedocs.org/en/dev/en/flash/) to the ESP8266. If you were to use [esptool](https://github.com/themadinventor/esptool) (like I do) you'd run:
 
@@ -69,10 +126,9 @@ There are several [tools to flash the firmware](http://nodemcu.readthedocs.org/e
 ## Support
 Don't leave comments on Docker Hub that are intended to be support requests. First, Docker Hub doesn't notify me when you write them, second I can't properly reply and third even if I could often it doesn't make much sense to keep them around forever and a day. Instead ask a question on [StackOverflow](http://stackoverflow.com/) and assign the `nodemcu` and `docker` tags.
 
-For bugs and improvement suggestions create an issue at [https://github.com/marcelstoer/docker-nodemcu-build/issues](https://github.com/marcelstoer/docker-nodemcu-build/issues).
+For bugs and improvement suggestions create an issue at [https://github.com/suculent/nodemcu-docker-build/issues](https://github.com/suculent/nodemcu-docker-build/issues).
 
 ## Credits
 Thanks to [Paul Sokolovsky](http://pfalcon-oe.blogspot.com/) who created and maintains [esp-open-sdk](https://github.com/pfalcon/esp-open-sdk).
 
-## Author
-[http://frightanic.com](http://frightanic.com)
+Thanks to [http://frightanic.com](http://frightanic.com) who created original NodeMCU Docker builder and inspired all variants by THiNX.
