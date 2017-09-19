@@ -70,8 +70,8 @@ if [[ -f "$WORKDIR/thinx.yml" ]]; then
     if [[ $C_MODULES == "*${module}*" ]]; then
       echo "Enabling C module ${module}"
     else
-      echo "Disabling C module ${module}"
-      rm -rf ${module}
+      echo "SHOULD Disable C module ${module} but ALSO EDIT MAKEFILE!"
+      # rm -rf ${module}
     fi
   done
 
@@ -90,8 +90,8 @@ if [[ -f "$WORKDIR/thinx.yml" ]]; then
     if [[ $LUA_MODULES == "*${module}*" ]]; then
       echo "Enabling LUA module ${module}"
     else
-      echo "Disabling LUA module ${module}"
-      rm -rf ${module}
+      echo "SHOULD Disable LUA module ${module} but ALSO EDIT MAKEFILE!"
+      # rm -rf ${module}
     fi
   done
 
