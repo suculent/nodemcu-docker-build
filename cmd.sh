@@ -37,37 +37,51 @@ else
   true
 fi
 
+export WORKDIR=$(pwd)
+echo "Workdir: ${WORKDIR}"
+
 export PATH=$PATH:/opt/esp-open-sdk/sdk:/opt/esp-open-sdk/xtensa-lx106-elf/bin
+
+echo "Changing directory to pre-build /opt/nodemcu-firmware folder:"
 cd /opt/nodemcu-firmware
 pwd
 ls
 
 # Parse thinx.yml config
 
-if [[ -f "thinx.yml" ]]; then
+if [[ -f "$WORKDIR/thinx.yml" ]]; then
   echo "Reading thinx.yml:"
-  parse_yaml thinx.yml
-  eval $(parse_yaml thinx.yml)
+  parse_yaml $WORKDIR/thinx.yml
+  eval $(parse_yaml $WORKDIR/thinx.yml)
 
-  pushd app
-    C_MODULES=$(ls -l */)
-    echo "- c-modules: ${nodemcu_modules_c[@]}"
+  echo "Entering app.."
+  pwd
+  ls
 
-    for module in ${nodemcu_modules_c[@]}; do
-      if [[ "module" == ".output" ]]; then
-        break;
-      fi
-      if [[ $C_MODULES == "*${module}*" ]]; then
-        echo "Enabling C module ${module}"
-      else
-        echo "Disabling C module ${module}"
-        rm -rf ${module}
-      fi
-    done
+  pushd /opt/nodemcu-firmware/app
+
+  C_MODULES=$(ls -l */)
+  echo "- c-modules: ${nodemcu_modules_c[@]}"
+
+  for module in ${nodemcu_modules_c[@]}; do
+    if [[ "module" == ".output" ]]; then
+      break;
+    fi
+    if [[ $C_MODULES == "*${module}*" ]]; then
+      echo "Enabling C module ${module}"
+    else
+      echo "Disabling C module ${module}"
+      rm -rf ${module}
+    fi
+  done
 
   popd
 
-  pushd lua_modules
+  echo "Entering modules.."
+  pwd
+  ls
+
+  pushd /opt/nodemcu-firmware/lua_modules
 
   LUA_MODULES=$(ls -l */)
   echo "- lua-modules: ${nodemcu_modules_lua[@]}"
