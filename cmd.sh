@@ -83,14 +83,14 @@ if [[ -f "$WORKDIR/thinx.yml" ]]; then
 
   pushd /opt/nodemcu-firmware/lua_modules
 
-  LUA_MODULES=$(ls -l */)
+  MODULES=$(ls -l */)
   echo "- lua-modules: ${nodemcu_modules_lua[@]}"
 
   for module in ${nodemcu_modules_lua[@]}; do
-    if [[ $LUA_MODULES == "*${module}*" ]]; then
-      echo "Enabling LUA module ${module}"
+    if [[ $MODULES == "*${module}*" ]]; then
+      echo "Enabling Lua module ${module}"
     else
-      echo "SHOULD Disable LUA module ${module} but ALSO EDIT MAKEFILE!"
+      echo "SHOULD Disable Lua module ${module} but ALSO EDIT MAKEFILE!"
       # rm -rf ${module}
     fi
   done

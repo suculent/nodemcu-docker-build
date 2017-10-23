@@ -6,7 +6,7 @@ Clone and edit the [NodeMCU firmware](https://github.com/nodemcu/nodemcu-firmwar
 ## Target audience
 I see 3 types of NodeMCU developers:
 - NodeMCU "application developers"
-  
+
   They just need a ready-made firmware. I created a [cloud build service](http://nodemcu-build.com/index.php) with a nice UI and configuration options for them.
 
 - Occasional NodeMCU firmware hackers
@@ -14,7 +14,7 @@ I see 3 types of NodeMCU developers:
   They don't need full control over the complete tool chain and don't want to setup a Linux VM with the build environment. **This image is _exactly_ for them!**
 
 - NodeMCU firmware developers
-  
+
   They commit or contribute to the project on GitHub and need their own full fledged [build environment with the complete tool chain](http://www.esp8266.com/wiki/doku.php?id=toolchain#how_to_setup_a_vm_to_host_your_toolchain). _They still might find this Docker image useful._
 
 +**This image has been created for purposes of the [THiNX OpenSource IoT management platform](https://thinx.cloud).**
@@ -55,13 +55,13 @@ If the Windows path contains spaces it would have to be wrapped in quotes as usu
 The two firmware files (integer and float) are created in the `bin` sub folder of your NodeMCU root directory. You will also find a mapfile in the `bin` folder with the same name as the firmware file but with a `.map` ending.
 
 #### Options
-You can pass the following optional parameters to the Docker build like so `docker run -e "<parameter>=value" -e ...`. 
+You can pass the following optional parameters to the Docker build like so `docker run -e "<parameter>=value" -e ...`.
 
 - `IMAGE_NAME` The default firmware file names are `nodemcu_float|integer_<branch>_<timestamp>.bin`. If you define an image name it replaces the `<branch>_<timestamp>` suffix and the full image names become `nodemcu_float|integer_<image_name>.bin`.
 - `INTEGER_ONLY` Set this to 1 if you don't need NodeMCU with floating support, cuts the build time in half.
 - `FLOAT_ONLY` Set this to 1 if you only need NodeMCU with floating support, cuts the build time in half.
 
-This variant also intends to support `thinx.yml` file that should allow for remote module configuration except for pre-populating filesystem with custom LUA files (and/or modules).
+This variant also intends to support `thinx.yml` file that should allow for remote module configuration except for pre-populating filesystem with custom Lua files (and/or modules).
 
 Format of the file should be as follows (supports is now disabled, because barely deleting module is not sufficient; Makefile needs to be edited first).
 
