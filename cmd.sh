@@ -75,6 +75,13 @@ if [[ -f "$WORKDIR/thinx.yml" ]]; then
     fi
   done
 
+  if [[ nodemcu_build_float == true ]]; then
+    FLOAT_ONLY=true
+  fi
+  if [[ nodemcu_build_float == false ]]; then
+    INTEGER_ONLY=true
+  fi
+
   popd
 
   echo "Entering modules.."
