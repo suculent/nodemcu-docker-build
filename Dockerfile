@@ -1,9 +1,9 @@
 FROM ubuntu
 MAINTAINER suculent@me.com
 
-RUN apt-get update && apt-get install -y wget unzip git make python-serial srecord bc xz-utils gcc git
-RUN git clone https://github.com/davidm/lua-inspect
-
+RUN apt-get update && apt-get install -y wget unzip git make python-serial srecord bc xz-utils gcc git \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+ && git clone https://github.com/davidm/lua-inspect
 
 WORKDIR /opt
 RUN wget https://github.com/nodemcu/nodemcu-firmware/raw/master/tools/esp-open-sdk.tar.xz && tar -Jxvf esp-open-sdk.tar.xz && rm -rf esp-open-sdk.tar.xz
