@@ -109,8 +109,10 @@ fi
 # make a float build if !only-integer
 if [ -z "$INTEGER_ONLY" ]; then
   make clean all
+  RESULT=$?
   cd bin
   srec_cat -output nodemcu_float_"${IMAGE_NAME}".bin -binary 0x00000.bin -binary -fill 0xff 0x00000 0x10000 0x10000.bin -binary -offset 0x10000
+  RESULT=$?
   # copy and rename the mapfile to bin/
   cp ../app/mapfile nodemcu_float_"${IMAGE_NAME}".map
   cd ../
@@ -121,10 +123,19 @@ fi
 # make an integer build
 if [ -z "$FLOAT_ONLY" ]; then
   make EXTRA_CCFLAGS="-DLUA_NUMBER_INTEGRAL" clean all
+  RESULT=$?
   cd bin
   srec_cat -output nodemcu_integer_"${IMAGE_NAME}".bin -binary 0x00000.bin -binary -fill 0xff 0x00000 0x10000 0x10000.bin -binary -offset 0x10000
+  RESULT=$?
   # copy and rename the mapfile to bin/
   cp ../app/mapfile nodemcu_integer_"${IMAGE_NAME}".map
 else
   true
+fi
+
+# Report build status using logfile
+if [[ $RESULT == 0 ]]; then
+  echo "THiNX BUILD SUCCESSFUL."
+else
+  echo "THiNX BUILD FAILED: $?"
 fi
