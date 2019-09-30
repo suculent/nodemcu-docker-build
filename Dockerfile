@@ -1,7 +1,7 @@
 FROM ubuntu
 MAINTAINER suculent@me.com
 
-RUN apt-get update && apt-get install -y wget unzip git make python-serial srecord bc xz-utils gcc git \
+RUN apt-get update -qq && apt-get install -qq -y wget unzip git make python-serial srecord bc xz-utils gcc git \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
  && git clone https://github.com/davidm/lua-inspect
 
