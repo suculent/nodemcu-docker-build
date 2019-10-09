@@ -40,7 +40,7 @@ fi
 export WORKDIR=$(pwd)
 echo "Workdir: ${WORKDIR}"
 
-export PATH=$PATH:/opt/esp-open-sdk/sdk:/opt/esp-open-sdk/xtensa-lx106-elf/bin
+export PATH=/home/nodemcu/esp-open-sdk/xtensa-lx106-elf/bin:$PATH
 
 echo "Changing directory to pre-build /opt/nodemcu-firmware folder:"
 cd /opt/nodemcu-firmware
