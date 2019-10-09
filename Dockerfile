@@ -18,7 +18,7 @@ WORKDIR /home/nodemcu
 RUN git clone --recursive https://github.com/pfalcon/esp-open-sdk.git
 RUN cd esp-open-sdk && make
 
-RUN mkdir /opt/nodemcu-firmware
-WORKDIR /opt/nodemcu-firmware
-COPY cmd.sh /opt/
-CMD /opt/cmd.sh
+RUN mkdir /home/nodemcu/nodemcu-firmware
+WORKDIR /home/nodemcu/nodemcu-firmware
+COPY cmd.sh /home/nodemcu/
+CMD /home/nodemcu/cmd.sh
