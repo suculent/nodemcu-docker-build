@@ -50,14 +50,7 @@ ls
 # Parse thinx.yml config
 
 if [[ -f "$WORKDIR/thinx.yml" ]]; then
-  echo "Reading thinx.yml:"
-  #parse_yaml $WORKDIR/thinx.yml
   eval $(parse_yaml $WORKDIR/thinx.yml)
-
-  echo "Entering app.."
-  pwd
-  ls
-
   pushd /opt/nodemcu-firmware/app
 
   C_MODULES=$(ls -l */)
