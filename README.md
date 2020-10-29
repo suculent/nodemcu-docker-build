@@ -1,4 +1,4 @@
-# Docker NodeMCU build
+# Docker NodeMCU build (deprecated)
 [![Docker Pulls](https://img.shields.io/docker/pulls/suculent/nodemcu-docker-build.svg)](https://hub.docker.com/r/suculent/nodemcu-docker-build/) [![Docker Stars](https://img.shields.io/docker/stars/suculent/nodemcu-docker-build.svg)](https://hub.docker.com/r/suculent/nodemcu-docker-build/) [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/suculent/nodemcu-docker-build/blob/master/LICENSE)
 
 Clone and edit the [NodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware) locally on your platform. This image will take it from there and turn your code into a binary which you then can [flash to the ESP8266](http://nodemcu.readthedocs.org/en/dev/en/flash/).
