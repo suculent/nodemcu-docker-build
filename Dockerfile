@@ -22,7 +22,8 @@ libtool \
 libtool-bin \
 make \
 ncurses-dev \
-python3-dev \
+python \
+python-dev \
 sed \
 srecord \
 texinfo \
