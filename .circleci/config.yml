@@ -1,0 +1,34 @@
+version: 2.1
+orbs:
+  docker: circleci/docker@1.5.0
+
+jobs:
+
+  deploy-nodemcu-docker-build:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: suculent/nodemcu-docker-build
+      - docker/push:
+          digest-path: /tmp/digest.txt
+          image: suculent/nodemcu-docker-build
+      - run:
+          command: |
+            echo "Digest is: $(</tmp/digest.txt)"
+            docker tag $(</tmp/digest.txt) suculent/nodemcu-docker-build:latest
+
+#
+# WORKFLOWS
+#
+
+workflows:
+  version: 2
+  build:
+    jobs:
+    - deploy-nodemcu-docker-build:
+        filters:
+          branches:
+            only: master
