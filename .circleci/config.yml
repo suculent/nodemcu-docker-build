@@ -28,7 +28,9 @@ workflows:
   version: 2
   build:
     jobs:
-    - deploy-nodemcu-docker-build:
-        filters:
-          branches:
-            only: master
+      - deploy-nodemcu-docker-build:
+          context:
+            - dockerhub
+          filters:
+            branches:
+              only: master
