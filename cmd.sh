@@ -126,6 +126,8 @@ else
   true
 fi
 
+echo ""
+
 # Report build status using logfile
 if [[ $RESULT == 0 ]]; then
   echo "THiNX BUILD SUCCESSFUL."
