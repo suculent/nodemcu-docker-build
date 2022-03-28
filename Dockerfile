@@ -1,49 +1,33 @@
-# do not upgrade, causes issues with crosstool-ng
-FROM ubuntu:bionic
+# see https://hub.docker.com/_/ubuntu/ for versions, should be the same as on Travis for NodeMCU CI
+# 16.04 == xenial
+FROM ubuntu:xenial
+LABEL maintainer="marcelstoer"
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -qq && apt-get install -y -qq \
-autoconf \
-automake \
-bash \
-bc \
-bison \
-bzip2 \
-flex \
-g++ \
-gawk \
-gcc \
-git \
-gperf \
-help2man \
-libexpat-dev \
-libtool \
-libtool-bin \
-make \
-ncurses-dev \
-python \
-python-dev \
-sed \
-srecord \
-texinfo \
-unrar-free \
-unzip \
-wget \
-xz-utils \
-&& apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && apt-get install -y --no-install-recommends wget unzip git make srecord bc xz-utils gcc ccache tzdata vim-tiny
+
+# additionally required for ESP32 builds as per https://nodemcu.readthedocs.io/en/dev-esp32/build/#ubuntu
+RUN apt-get install -y --no-install-recommends git gperf python-pip python-dev flex bison build-essential libssl-dev libffi-dev libncurses5-dev libncursesw5-dev libreadline-dev
+
+RUN pip install --upgrade pip
+RUN pip install setuptools
+
+RUN rm -rf /root
+RUN ln -s /tmp /root
+ENV PATH="/opt:${PATH}"
+
+COPY cmd.sh /opt/
+COPY build /opt/
+COPY build-esp32 /opt/
+COPY build-esp8266 /opt/
+COPY configure-esp32 /opt/
+COPY lfs-image /opt/
 
 RUN git clone https://github.com/davidm/lua-inspect
 
-RUN adduser --system --disabled-password --shell /bin/bash nodemcu
+# Release some space...
+RUN apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 
-USER nodemcu
-
-WORKDIR /home/nodemcu
-RUN git clone --recursive https://github.com/pfalcon/esp-open-sdk.git
-RUN cd /home/nodemcu/esp-open-sdk/ && make
-
-RUN mkdir /home/nodemcu/nodemcu-firmware
-WORKDIR /home/nodemcu/nodemcu-firmware
-COPY cmd.sh /home/nodemcu/
-CMD /home/nodemcu/cmd.sh
+CMD ["/opt/cmd.sh"]
