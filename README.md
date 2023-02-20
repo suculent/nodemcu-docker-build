@@ -3,6 +3,8 @@
 
 Clone and edit the [NodeMCU firmware](https://github.com/nodemcu/nodemcu-firmware) locally on your platform. This image will take it from there and turn your code into a binary which you then can [flash to the ESP8266](http://nodemcu.readthedocs.org/en/dev/en/flash/).
 
+This is based on a patch by [Chris MacGregor](https://github.com/ChrisMacGregor/esp-open-sdk/branches) since moving Ubuntu 22.10.
+
 ## Target audience
 I see 3 types of NodeMCU developers:
 - NodeMCU "application developers"

@@ -1,5 +1,5 @@
 # do not upgrade, causes issues with crosstool-ng
-FROM ubuntu:bionic
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -22,8 +22,8 @@ libtool \
 libtool-bin \
 make \
 ncurses-dev \
-python \
-python-dev \
+python3 \
+python3-dev \
 sed \
 srecord \
 texinfo \
@@ -40,7 +40,7 @@ RUN adduser --system --disabled-password --shell /bin/bash nodemcu
 USER nodemcu
 
 WORKDIR /home/nodemcu
-RUN git clone --recursive https://github.com/pfalcon/esp-open-sdk.git
+RUN git clone --recursive https://github.com/ChrisMacGregor/esp-open-sdk.git --branch fix-ubuntu-21.10-build
 RUN cd /home/nodemcu/esp-open-sdk/ && make
 
 RUN mkdir /home/nodemcu/nodemcu-firmware
