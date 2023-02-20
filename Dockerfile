@@ -32,6 +32,8 @@ wget \
 xz-utils \
 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN ln -s /usr/bin/python2 /usr/bin/python && python -v
+
 RUN git clone https://github.com/davidm/lua-inspect
 
 RUN adduser --system --disabled-password --shell /bin/bash nodemcu
