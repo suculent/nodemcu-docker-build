@@ -39,7 +39,7 @@ RUN adduser --system --disabled-password --shell /bin/bash nodemcu
 USER nodemcu
 
 WORKDIR /home/nodemcu
-RUN git clone --recursive https://github.com/ChrisMacGregor/esp-open-sdk.git --branch fix-ubuntu-21.10-build
+RUN git clone --recursive https://github.com/ChrisMacGregor/esp-open-sdk.git
 RUN cd /home/nodemcu/esp-open-sdk/ && make
 
 RUN mkdir /home/nodemcu/nodemcu-firmware
