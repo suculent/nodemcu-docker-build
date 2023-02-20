@@ -1,5 +1,4 @@
-# do not upgrade, causes issues with crosstool-ng
-FROM ubuntu:22.04
+FROM ubuntu:rolling
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -22,8 +21,8 @@ libtool \
 libtool-bin \
 make \
 ncurses-dev \
-python3 \
-python3-dev \
+python2 \
+python2-dev \
 sed \
 srecord \
 texinfo \
