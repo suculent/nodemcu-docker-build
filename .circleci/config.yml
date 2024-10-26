@@ -4,6 +4,16 @@ orbs:
 
 jobs:
 
+  test-docker-build:
+    executor: docker/docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - docker/check
+      - docker/build:
+          image: suculent/nodemcu-docker-build
+          tag: latest
+
   deploy-docker-build:
     executor: docker/docker
     steps:
@@ -30,6 +40,10 @@ workflows:
 
   build:
     jobs:
+      - test-docker-build:
+          context:
+            - dockerhub
+
       - deploy-docker-build:
           context:
             - dockerhub
