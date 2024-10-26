@@ -1,4 +1,4 @@
-FROM ubuntu:rolling
+FROM ubuntu:20.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -21,8 +21,8 @@ libtool \
 libtool-bin \
 make \
 ncurses-dev \
-python2 \
-python2-dev \
+python3 \
+python3-dev \
 sed \
 srecord \
 texinfo \
@@ -32,7 +32,7 @@ wget \
 xz-utils \
 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN ln -s /usr/bin/python2 /usr/bin/python && python -v
+RUN ln -s /usr/bin/python3 /usr/bin/python && python -v
 
 RUN git clone https://github.com/davidm/lua-inspect
 
