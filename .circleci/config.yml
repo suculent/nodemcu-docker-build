@@ -58,7 +58,11 @@ workflows:
           context:
             - dockerhub
 
+      # Deploy waits for the tests (thinx.yml loader + image build): nothing is
+      # pushed to Docker Hub from a commit whose tests failed.
       - deploy-docker-build:
+          requires:
+            - test-docker-build
           context:
             - dockerhub
           filters:
