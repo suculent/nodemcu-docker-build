@@ -13,6 +13,12 @@ jobs:
           command: |
             git clone "https://github.com/suculent/nodemcu-docker-build.git" .
             git checkout "${CIRCLE_SHA1}" || echo "SHA not found; using default branch"
+      # Seconds, no compile: cmd.sh must read thinx.yml (repository content
+      # carrying devsec credentials) without eval. Plain sh on the executor;
+      # the image does not carry tests/.
+      - run:
+          name: thinx.yml loader test (cmd.sh never evals thinx.yml)
+          command: sh tests/thinx-yml-loader.sh
       - docker/check
       - docker/build:
           image: suculent/nodemcu-docker-build
