@@ -7,7 +7,11 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update -qq && apt-get install -y -qq \
+# `apt-get upgrade` pulls in Ubuntu security updates for packages the base image
+# already carries; without it they wait for the next ubuntu:22.04 tag refresh.
+# The dpkg check fails the build if libbrotli1 (pulled in by git via libcurl)
+# is below the fix for CVE-2026-111497.
+RUN apt-get update -qq && apt-get upgrade -y -qq && apt-get install -y -qq \
 autoconf \
 automake \
 bash \
@@ -35,6 +39,7 @@ unrar-free \
 unzip \
 wget \
 xz-utils \
+&& dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.0.9-2ubuntu0.1 \
 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN ln -s /usr/bin/python3 /usr/bin/python && python -v
