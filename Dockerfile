@@ -9,8 +9,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # `apt-get upgrade` pulls in Ubuntu security updates for packages the base image
 # already carries; without it they wait for the next ubuntu:22.04 tag refresh.
-# The dpkg check fails the build if libbrotli1 (pulled in by git via libcurl)
-# is below the fix for CVE-2026-111497.
+# The dpkg checks fail the build if libbrotli1 (pulled in by git via libcurl)
+# is below the fix for CVE-2026-111497, or if ca-certificates predates the
+# 2026-10-20 release that blacklists "emSign ECC Root CA - G3" after the
+# eMudhra intermediate compromise (LP: #2171507; Aikido reports it as Certifi).
 RUN apt-get update -qq && apt-get upgrade -y -qq && apt-get install -y -qq \
 autoconf \
 automake \
@@ -40,6 +42,9 @@ unzip \
 wget \
 xz-utils \
 && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.0.9-2ubuntu0.1 \
+&& dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20260816ubuntu0.22.04.1 \
+&& ! test -e /usr/share/ca-certificates/mozilla/emSign_ECC_Root_CA_-_G3.crt \
+&& ! test -e /etc/ssl/certs/emSign_ECC_Root_CA_-_G3.pem \
 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN ln -s /usr/bin/python3 /usr/bin/python && python -v
