@@ -10,9 +10,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # `apt-get upgrade` pulls in Ubuntu security updates for packages the base image
 # already carries; without it they wait for the next ubuntu:22.04 tag refresh.
 # The dpkg checks fail the build if libbrotli1 (pulled in by git via libcurl)
-# is below the fix for CVE-2026-111497, or if ca-certificates predates the
+# is below the fix for CVE-2026-111497, if ca-certificates predates the
 # 2026-10-20 release that blacklists "emSign ECC Root CA - G3" after the
-# eMudhra intermediate compromise (LP: #2171507; Aikido reports it as Certifi).
+# eMudhra intermediate compromise (LP: #2171507; Aikido reports it as Certifi),
+# or if libpcre2-8-0 (pulled in transitively) is below the 10.39-3ubuntu0.2
+# jammy-security update.
 RUN apt-get update -qq && apt-get upgrade -y -qq && apt-get install -y -qq \
 autoconf \
 automake \
@@ -43,6 +45,7 @@ wget \
 xz-utils \
 && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libbrotli1)" ge 1.0.9-2ubuntu0.1 \
 && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' ca-certificates)" ge 20260816ubuntu0.22.04.1 \
+&& dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libpcre2-8-0)" ge 10.39-3ubuntu0.2 \
 && ! test -e /usr/share/ca-certificates/mozilla/emSign_ECC_Root_CA_-_G3.crt \
 && ! test -e /etc/ssl/certs/emSign_ECC_Root_CA_-_G3.pem \
 && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
